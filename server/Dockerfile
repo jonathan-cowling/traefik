@@ -9,13 +9,16 @@ RUN go install main
 
 FROM alpine:3.10.0 as run
 
-RUN useradd -mUs /bin/sh app
-RUN addgroup -S appgroup && adduser -S appuser -G appgroup && false
+RUN addgroup -S app
+RUN adduser -S -G app -h /home/app -s /bin/sh app
 USER app
 WORKDIR /home/app
 EXPOSE 8080
 
-COPY --from=build --chown=app:app /build/bin/main /home/app/main
-COPY --chown=app:app /src/main/resources/* /home/app/
+ARG ARG_SUCCESS_THRESHOLD=0.5
 
+COPY --from=build --chown=app:app /build/bin/main /home/app/main
+COPY --chown=app:app /src/main/resources/ /home/app/
+
+ENV SUCCESS_THRESHOLD=${ARG_SUCCESS_THRESHOLD}
 ENTRYPOINT [ "/home/app/main" ]

@@ -1,0 +1,59 @@
+version: '3'
+
+services:
+  go1:
+    restart: always
+    build:
+      context: server
+      args:
+        ARG_SUCCESS_THRESHOLD: ${SUCCESS_THRESHOLD_1}
+    # direct to container
+    ports:
+      - "9001:8080"
+    networks:
+      - default
+  go2:
+    restart: always
+    build:
+      context: server
+      args:
+        ARG_SUCCESS_THRESHOLD: ${SUCCESS_THRESHOLD_2}
+    # direct to container
+    ports:
+      - "9002:8080"
+    networks:
+      - default
+  go3:
+    restart: always
+    build:
+      context: server
+      args:
+        ARG_SUCCESS_THRESHOLD: ${SUCCESS_THRESHOLD_3}
+    # direct to container
+    ports:
+      - "9003:8080"
+    networks:
+      - default
+  go4:
+    restart: always
+    build:
+      context: server
+      args:
+        ARG_SUCCESS_THRESHOLD: ${SUCCESS_THRESHOLD_4}
+    # direct to container
+    ports:
+      - "9004:8080"
+    networks:
+      - default
+  traefik:
+    restart: always
+    build:
+      context: traefik
+    ports:
+      - "8001:80"
+      - "8002:443"
+      - "8003:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    networks:
+      - default

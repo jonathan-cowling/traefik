@@ -1,0 +1,50 @@
+debug = true
+logLevel = "WARN"
+defaultEntryPoints = []
+
+[entryPoints]
+    [entryPoints.http]
+    address = ":80"
+
+# [api]
+#   entryPoint = "traefik"
+#   dashboard = true
+
+[ping]
+  entryPoint = "traefik"
+
+[docker]
+  endpoint = "unix:///var/run/docker.sock"
+  domain = "docker.localhost"
+  exposedByDefault = true
+
+[frontends]
+  [frontends.go1a]
+  backend = "go1"
+    [frontends.go1a.routes.1]
+    rule = "PathPrefixStrip:/1/"
+  [frontends.go1b]
+  backend = "go1"
+    [frontends.go1b.routes.1]
+    rule = "PathPrefixStrip:/2/"
+
+[backends]
+  [backends.go1]
+    [backends.backend1.servers.server1]
+    url = "http://go1:8080"
+  [backends.backend2]
+    [backends.backend2.servers.server1]
+    url = "https://go2:8080"
+#   [frontends.go2]
+#   backend = "backend1"
+#   passHostHeader = true
+#   [frontends.frontend2.passTLSClientCert]
+#     pem = true
+#   priority = 10
+#   entrypoints = ["https"] # overrides defaultEntryPoints
+#     [frontends.frontend2.routes.test_1]
+#     rule = "HostRegexp:localhost,{subdomain:[a-z]+}.localhost"
+#   [frontends.frontend3]
+#   backend = "backend2"
+#     [frontends.frontend3.routes.test_1]
+#     rule = "Host:test3.localhost;Path:/test"

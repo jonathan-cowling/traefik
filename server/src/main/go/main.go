@@ -15,7 +15,13 @@ func main() {
 	T_200 := "200.go.html"
 	T_400 := "400.go.html"
 
-	SUCCESS_THRESHOLD, _ := strconv.ParseFloat(os.Getenv("SUCCESS_THRESHOLD"), 64)
+	envSuccessThreshold := os.Getenv("SUCCESS_THRESHOLD")
+
+	if (envSuccessThreshold == "") {
+		panic("SUCCESS_THRESHOLD not in environment")
+	}
+
+	SUCCESS_THRESHOLD, _ := strconv.ParseFloat(envSuccessThreshold, 64)
 
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		randomNumber := rand.NormFloat64()
