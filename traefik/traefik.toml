@@ -1,17 +1,19 @@
-debug = true
-logLevel = "DEBUG"
-defaultEntryPoints = [ "http" ]
+debug = false
+logLevel = "WARN"
+defaultEntryPoints = [ ]
 
 [entryPoints]
     [entryPoints.http]
-    address = ":80"
+      address = ":80"
+    [entryPoints.admin]
+      address = ":8081"
 
 [api]
-  entryPoint = "traefik"
+  entryPoint = "admin"
   dashboard = true
 
 [ping]
-  entryPoint = "traefik"
+  entryPoint = "admin"
 
 [frontends]
   [frontends.good]
@@ -22,16 +24,19 @@ defaultEntryPoints = [ "http" ]
     rule = "PathPrefixStrip:/good/"
   [frontends.bad]
   backend = "bad"
+  entryPoints = [ "http" ]
     [frontends.bad.routes]
     [frontends.bad.routes.route1]
     rule = "PathPrefixStrip:/bad/"
   [frontends.ugly]
   backend = "ugly"
+  entryPoints = [ "http" ]
     [frontends.ugly.routes]
     [frontends.ugly.routes.route1]
     rule = "PathPrefixStrip:/ugly/"
   [frontends.fail]
   backend = "ugly"
+  entryPoints = [ "http" ]
     [frontends.fail.routes]
     [frontends.fail.routes.route1]
     rule = "PathPrefixStrip:/fail/"
@@ -46,18 +51,18 @@ defaultEntryPoints = [ "http" ]
     weight = 1
   [backends.bad]
     [backends.bad.servers.server1]
-    url = "https://go2:8080"
+    url = "http://go2:8080"
     weight = 1
   [backends.ugly]
     [backends.ugly.servers.server1]
-    url = "https://go3:8080"
+    url = "http://go3:8080"
     weight = 1
   [backends.fail]
     [backends.fail.servers.server1]
-    url = "https://go4:8080"
+    url = "http://go4:8080"
     weight = 1
 
 [metrics]
   [metrics.prometheus]
-    entryPoint = "traefik"
+    entryPoint = "admin"
     buckets = [0.1,0.3,1.2,5.0]
