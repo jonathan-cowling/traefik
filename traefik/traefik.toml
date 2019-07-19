@@ -35,7 +35,7 @@ defaultEntryPoints = [ ]
     [frontends.ugly.routes.route1]
     rule = "PathPrefixStrip:/ugly/"
   [frontends.fail]
-  backend = "ugly"
+  backend = "fail"
   entryPoints = [ "http" ]
     [frontends.fail.routes]
     [frontends.fail.routes.route1]

@@ -51,5 +51,13 @@ services:
       context: prometheus
     ports:
       - 9001:9090
-  # restricted admin proxy
-  # unrestricted proxy
+  grafana:
+    restart: always
+    build: 
+      context: grafana
+    depends_on:
+      - prometheus
+    ports:
+      - "9002:3000"
+  # TODO: restricted admin proxy
+  # TODO: unrestricted proxy
