@@ -1,16 +1,20 @@
-debug = false
-logLevel = "WARN"
+debug = true
+logLevel = "INFO"
 defaultEntryPoints = [ ]
 
 [entryPoints]
     [entryPoints.http]
       address = ":80"
-    [entryPoints.admin]
+    [entryPoints.metrics]
       address = ":8081"
+    [entryPoints.admin]
+      address = ":8082"
 
 [api]
   entryPoint = "admin"
   dashboard = true
+  [api.statistics]
+    recentErrors = 10
 
 [ping]
   entryPoint = "admin"
@@ -40,6 +44,22 @@ defaultEntryPoints = [ ]
     [frontends.fail.routes]
     [frontends.fail.routes.route1]
     rule = "PathPrefixStrip:/fail/"
+  [frontends.prometheus]
+    backend = "prometheus"
+    entryPoints = [ "admin" ]
+    [frontends.prometheus.routes]
+      [frontends.prometheus.routes.route1]
+        rule = "Path:/prometheus/{subpath:.*}"
+      [frontends.prometheus.routes.route2]
+        rule = "Path:/prometheus"
+  [frontends.grafana]
+    backend = "grafana"
+    entryPoints = [ "admin" ]
+    [frontends.grafana.routes]
+      [frontends.grafana.routes.route1]
+        rule = "Path:/grafana/{subpath:.*}"
+      [frontends.grafana.routes.route2]
+        rule = "Path:/grafana"
 
 [file]
   watch = true
@@ -61,8 +81,14 @@ defaultEntryPoints = [ ]
     [backends.fail.servers.server1]
     url = "http://go4:8080"
     weight = 1
+  [backends.prometheus]
+    [backends.prometheus.servers.server1]
+    url = "http://prometheus:9090"
+  [backends.grafana]
+    [backends.grafana.servers.server1]
+    url = "http://grafana:3000"
 
 [metrics]
   [metrics.prometheus]
-    entryPoint = "admin"
+    entryPoint = "metrics"
     buckets = [0.1,0.3,1.2,5.0]
