@@ -1,6 +1,0 @@
-[paths]
-provisioning = "/etc/grafana/provisioning"
-
-[server]
-domain = grafana
-root_url = %(protocol)s://%(domain)s/grafana/

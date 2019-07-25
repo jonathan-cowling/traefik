@@ -24,42 +24,42 @@ defaultEntryPoints = [ ]
   backend = "good"
   entryPoints = [ "http" ]
     [frontends.good.routes]
-    [frontends.good.routes.route1]
+    [frontends.good.routes.rule1]
     rule = "PathPrefixStrip:/good/"
   [frontends.bad]
   backend = "bad"
   entryPoints = [ "http" ]
     [frontends.bad.routes]
-    [frontends.bad.routes.route1]
+    [frontends.bad.routes.rule1]
     rule = "PathPrefixStrip:/bad/"
   [frontends.ugly]
   backend = "ugly"
   entryPoints = [ "http" ]
     [frontends.ugly.routes]
-    [frontends.ugly.routes.route1]
+    [frontends.ugly.routes.rule1]
     rule = "PathPrefixStrip:/ugly/"
   [frontends.fail]
   backend = "fail"
   entryPoints = [ "http" ]
     [frontends.fail.routes]
-    [frontends.fail.routes.route1]
+    [frontends.fail.routes.rule1]
     rule = "PathPrefixStrip:/fail/"
   [frontends.prometheus]
     backend = "prometheus"
     entryPoints = [ "admin" ]
     [frontends.prometheus.routes]
-      [frontends.prometheus.routes.route1]
-        rule = "Path:/prometheus/{subpath:.*}"
-      [frontends.prometheus.routes.route2]
-        rule = "Path:/prometheus"
+      [frontends.prometheus.routes.rule1]
+        rule = "Path:/prometheus,/prometheus/{subpath:.*}"
   [frontends.grafana]
     backend = "grafana"
     entryPoints = [ "admin" ]
     [frontends.grafana.routes]
-      [frontends.grafana.routes.route1]
-        rule = "Path:/grafana/{subpath:.*}"
-      [frontends.grafana.routes.route2]
-        rule = "Path:/grafana"
+      [frontends.grafana.routes.rule1]
+        rule = "PathPrefixStrip:/grafana"
+      [frontends.grafana.routes.rule2]
+        rule = "PathPrefixStrip:/grafana/"
+      [frontends.grafana.routes.rule3]
+        rule = "Path:/grafana,/grafana/{subpath:.*}"
 
 [file]
   watch = true
