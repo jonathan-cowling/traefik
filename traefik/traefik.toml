@@ -1,6 +1,7 @@
 debug = true
 logLevel = "INFO"
 defaultEntryPoints = [ ]
+keepTrailingSlash = true
 
 [entryPoints]
     [entryPoints.http]
@@ -57,8 +58,6 @@ defaultEntryPoints = [ ]
       [frontends.grafana.routes.rule1]
         rule = "PathPrefixStrip:/grafana"
       [frontends.grafana.routes.rule2]
-        rule = "PathPrefixStrip:/grafana/"
-      [frontends.grafana.routes.rule3]
         rule = "Path:/grafana,/grafana/{subpath:.*}"
 
 [file]
